@@ -15,7 +15,7 @@ pipeline{
         }
         stage('Checkout from Git'){
             steps{
-                git branch: 'main', url: 'https://github.com/vijaygiduthuri/Zomato.git'
+                git branch: 'main', url: 'https://github.com/srinivasthalla/Zomato.git'
             }
         }
         stage("Sonarqube Analysis "){
@@ -54,20 +54,20 @@ pipeline{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
                        sh "docker build -t zomato ."
-                       sh "docker tag zomato vijaygiduthuri/zomato:latest "
-                       sh "docker push vijaygiduthuri/zomato:latest "
+                       sh "docker tag zomato srinivasthalla/zomato:latest "
+                       sh "docker push srinivasthalla/zomato:latest "
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image vijaygiduthuri/zomato:latest > trivy.txt" 
+                sh "trivy image srinivasthalla/zomato:latest > trivy.txt" 
             }
         }
         stage('Deploy to container'){
             steps{
-                sh 'docker run -d --name zomato -p 3000:3000 vijaygiduthuri/zomato:latest'
+                sh 'docker run -d --name zomato -p 3000:3000 srinivasthalla/zomato:latest'
             }
         }
     }
